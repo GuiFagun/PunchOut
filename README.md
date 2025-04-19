@@ -10,4 +10,10 @@ Adições relevantes:
 5- Timer de 60 segundos de duração do round.  
 6- Contador de vitórias e derrotas.  
 7- Cenas especiais para vitória e derrota do jogador.  
-8- Transparência real para os sprites do jogador e do inimigo, pois no visual studio, picture boxes não possuem transparência real, apenas refletindo a imagem de fundo e causando overlap nas imagens atrás. Esse problema foi consertado.
+8- Transparência real para os sprites do jogador e do inimigo, pois no visual studio, picture boxes não possuem transparência real, apenas refletindo a imagem de fundo e causando overlap nas imagens atrás. Esse problema foi consertado.  
+
+Controles:  
+↓ = Bloqueio.  
+→ = Soco de direito.  
+← = Soco de esquerdo.  
+Para reiniciar o jogo = Clique OK no pop-up mostrado após o fim de uma luta.
