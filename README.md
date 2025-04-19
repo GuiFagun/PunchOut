@@ -1,19 +1,19 @@
-PunchOut - Projeto do 1 bimestre de Programação Orientada a Objetos 2.  
+PunchOut - Project from the 1st bimester of Object Oriented Programming 2.
 
-Desenvolvido em c#, utiliza o tutorial da MOO ICT em (https://www.mooict.com/c-tutorial-create-a-simple-punch-out-style-boxing-game-in-visual-studio/) como base.  
+Developed in C#, it uses the MOO ICT tutorial at (https://www.mooict.com/c-tutorial-create-a-simple-punch-out-style-boxing-game-in-visual-studio/) as a base.
 
-Adições relevantes:  
-1- Música tema para a luta, cena de vitória e cena de derrota.  
-2- Efeitos sonoros para socos acertados, socos errados, bloqueio e socos tomados.  
-3- Intervalo entre socos para evitar que o jogo se torne muito fácil.  
-4- Maior naturalidade na movimentação e animações do inimigo.  
-5- Timer de 60 segundos de duração do round.  
-6- Contador de vitórias e derrotas.  
-7- Cenas especiais para vitória e derrota do jogador.  
-8- Transparência real para os sprites do jogador e do inimigo, pois no visual studio, picture boxes não possuem transparência real, apenas refletindo a imagem de fundo e causando overlap nas imagens atrás. Esse problema foi consertado.  
+Relevant additions:
+1- Theme music for the fight, victory scene and defeat scene.
+2- Sound effects for punches landed, punches missed, blocking and punches taken.
+3- Interval between punches to prevent the game from becoming too easy.
+4- Greater naturalness in enemy movement and animations.
+5- 60-second round timer.
+6- Victory and defeat counter.
+7- Special scenes for player victory and defeat.
+8- Real transparency for the player and enemy sprites, because in Visual Studio, picture boxes do not have real transparency, only reflecting the background image and causing overlap in the images behind. This problem has been fixed.
 
-Controles:  
-↓ = Bloqueio.  
-→ = Soco de direito.  
-← = Soco de esquerdo.  
-Para reiniciar o jogo = Clique OK no pop-up mostrado após o fim de uma luta.
+Controls:
+↓ = Block.
+→ = Right punch.
+← = Left punch.
+To restart the game = Click OK in the pop-up shown after the end of a fight.
