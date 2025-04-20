@@ -30,7 +30,7 @@ namespace PunchOut
         int playerHealth = 100; // players total health
         int enemyHealth = 100; // enemys total health
 
-        // This is related to the OnPaint method, what that does is basically removing the overlap of the images, because even though the backgrounds are transparent,
+        // Those are related to the OnPaint method to fiz transparency, they basically work as invisible canvases where the sprites are prepared before showing.
         private Bitmap boxerBuffer;
         private Bitmap enemyBuffer;
 
@@ -76,7 +76,8 @@ namespace PunchOut
             boxerBuffer = new Bitmap(boxer.Width, boxer.Height);
             enemyBuffer = new Bitmap(enemyBoxer.Width, enemyBoxer.Height);
 
-            // Enable double buffering (Also related to OnPaint method)
+            // Draws everything on hidden buffer, then instantly swap screen when ready (imagine like flipping to a new animation cel).
+            // Without this we would experience flickering.
             this.DoubleBuffered = true;
         }
 
@@ -87,7 +88,7 @@ namespace PunchOut
 
             if (roundTimeLeft >= 0) // Whenever timer is greater than 0, it runs.
             {
-                if (roundTimeLeft >= 10) 
+                if (roundTimeLeft >= 10)
                 {
                     roundTimerLabel.Text = $"00:{roundTimeLeft}";
                 }
@@ -96,7 +97,7 @@ namespace PunchOut
                     roundTimerLabel.Text = $"00:0{roundTimeLeft}";
                 }
             }
-            
+
             //Checks if time ran out and who won based on remaining health. On a tie, enemy wins.
             if (roundTimeLeft == 0 && (enemyHealth > playerHealth || playerHealth == enemyHealth))
             {
@@ -116,7 +117,8 @@ namespace PunchOut
                 });
                 return;
             }
-            else if (roundTimeLeft == 0 && playerHealth > enemyHealth) { 
+            else if (roundTimeLeft == 0 && playerHealth > enemyHealth)
+            {
                 gameOver = true;
                 enemyTimer.Stop();
                 enemyMove.Stop();
@@ -135,9 +137,16 @@ namespace PunchOut
             }
         }
 
-        // Windows Forms still overlaps picture boxes, but instead of their boxes becoming transparent, they become the background image.
-        // I won't lie in saying I definitely had to use AI to fix this as it was very hard and confusing trying to find a solution online, so take a leap of faith in this case, it worked.
-        // What I can understand is that it basically draws the image on the background, and then draws the player on top of it with a transparency effect.
+        /* Windows Forms still overlaps picture boxes, but instead of their boxes becoming transparent, they become the background image.  
+        I won't lie in saying I definitely had to use AI to help me fix this as it was very hard and confusing trying to find a solution online, so take a leap of faith in this case, it worked.  
+        Whatit does is that it basically overrides the default drawing behavior, first it draws the enemy boxer and then the player with proper transparency.  
+        By drawing the sprites directly, it bypasses the limitations of PictureBox.  
+        The way it runs is:
+        1- Draws enemy ? buffer
+        2- Draws player ? buffer with matrix filter applied
+        3- Shows final composite image
+        Then for every pixel in boxer that overlaps with ther enemy, we have "FinalColor = (BoxerColor × 0.99) + (EnemyColor × 0.01)", where 0.99 is the alpha value.
+        */
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e); // Let Windows handle all controls normally
@@ -149,14 +158,14 @@ namespace PunchOut
             // Draw player with proper transparency
             using (var attributes = new ImageAttributes())
             {
-                var transparency = 0.99f; // Adjust if needed
-                var colorMatrix = new ColorMatrix( new float[][] {
-                    new float[] {1, 0, 0, 0, 0},
-                    new float[] {0, 1, 0, 0, 0},
-                    new float[] {0, 0, 1, 0, 0},
-                    new float[] {0, 0, 0, transparency, 0},
-                    new float[] {0, 0, 0, 0, 1}
-            }   );
+                var transparency = 1f; // Adjust if needed.
+                var colorMatrix = new ColorMatrix(new float[][] {
+                    new float[] {1, 0, 0, 0, 0}, // Red. Keeps red at 100%.
+                    new float[] {0, 1, 0, 0, 0}, // Blue. Keeps green at 100%.
+                    new float[] {0, 0, 1, 0, 0}, // Green. Keeps blue at 100%.
+                    new float[] {0, 0, 0, transparency, 0}, // Alpha. Controls alpha transparency opacity.
+                    new float[] {0, 0, 0, 0, 1} // Bright. Preserves brightness.
+            });
 
                 attributes.SetColorMatrix(colorMatrix);
 
@@ -392,14 +401,14 @@ namespace PunchOut
         }
 
         // Game reset method
-        private void resetGame() {
+        private void resetGame()
+        {
 
             enemyTimer.Stop();   // Always stop first
             enemyMove.Stop();
             roundTimeLeft = 60;
-
-            enemyBoxer.Left = 385;
-            enemyBoxer.Top = 297;
+            enemyBoxer.Left = 346;
+            enemyBoxer.Top = 193;
             enemyBoxer.Image = Properties.Resources.enemy_stand;
             boxer.Image = Properties.Resources.boxer_stand;
 
